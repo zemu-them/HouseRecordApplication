@@ -1,6 +1,7 @@
 package work.zemu_them.android.houserecordapplication
 
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import android.support.design.widget.Snackbar
@@ -21,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     // 位置情報を取得できるクラス
     private lateinit var fusedLocationClient : FusedLocationProviderClient
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,21 +36,32 @@ class MainActivity : AppCompatActivity() {
         }
 
         val locationCallback = object : LocationCallback(){
+            var latidue = 0.0
+            var longitude = 0.0
             override fun onLocationResult(locationResult: LocationResult?){
                 val location = locationResult?.lastLocation ?: return
                 Log.d("debug","経度:${location.latitude},経度:${location.longitude}")
                 Toast.makeText(this@MainActivity,
                     "経度:${location.latitude},経度:${location.longitude}", Toast.LENGTH_SHORT).show()
+                latidue = location.latitude
+                longitude = location.longitude
             }
+            fun lastLatitude() = latidue
+            fun lastLongitude() = longitude
         }
 
         fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper())
+
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
             //MapActivityに画面遷移
             val mapIntent = Intent(this,MapsActivity::class.java)
+            mapIntent.putExtra("latitude",locationCallback.lastLatitude())
+            mapIntent.putExtra("longitude",locationCallback.lastLongitude())
+            Log.d("debug","Intent 経度:${locationCallback.lastLatitude()}")
+            Log.d("debug","Intent 緯度:${locationCallback.lastLongitude()}")
             Log.d("debug","Intent")
             startActivity(mapIntent)
         }
