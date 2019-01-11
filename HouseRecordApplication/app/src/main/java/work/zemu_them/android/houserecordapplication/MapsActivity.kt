@@ -3,12 +3,15 @@ package work.zemu_them.android.houserecordapplication
 import android.annotation.SuppressLint
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import java.util.logging.LogManager
 
@@ -47,8 +50,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(mapLaditude, mapLongitude)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        mMap.addMarker(MarkerOptions().position(sydney).title("Now Place").draggable(true))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-    }
 
+        mMap.setOnMarkerDragListener(object :GoogleMap.OnMarkerDragListener{
+            override fun onMarkerDragStart(marker: Marker?) {
+            }
+
+            override fun onMarkerDrag(marker: Marker?) {
+            }
+
+            override fun onMarkerDragEnd(marker: Marker) {
+                Toast.makeText(this@MapsActivity,"marker point 経度: ${marker.position.latitude}\nmarker point 緯度: ${marker.position.longitude}",Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+
+
+
+    }
 }
