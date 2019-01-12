@@ -10,12 +10,16 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.github.clans.fab.FloatingActionButton
+import com.github.clans.fab.FloatingActionMenu
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 
 import kotlinx.android.synthetic.main.activity_main.*
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         fusedLocationClient = FusedLocationProviderClient(this)
 
         val locationRequest = LocationRequest().apply{
-            interval = 10000
+            interval = 60000
             fastestInterval = 5000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
@@ -52,17 +56,15 @@ class MainActivity : AppCompatActivity() {
 
         fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper())
 
+        fab_menu_map.setOnClickListener{view ->
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            //TODO something when floating action menu first item clicked
             //MapActivityに画面遷移
             val mapIntent = Intent(this,MapsActivity::class.java)
             mapIntent.putExtra("latitude",locationCallback.lastLatitude())
             mapIntent.putExtra("longitude",locationCallback.lastLongitude())
             Log.d("debug","Intent 経度:${locationCallback.lastLatitude()}")
             Log.d("debug","Intent 緯度:${locationCallback.lastLongitude()}")
-            Log.d("debug","Intent")
             startActivity(mapIntent)
         }
     }
