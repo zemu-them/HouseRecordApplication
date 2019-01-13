@@ -8,9 +8,8 @@ import android.widget.Toast
 import com.google.android.gms.location.places.Places
 import com.google.android.gms.location.places.ui.PlacePicker
 
-
 import android.content.Intent
-
+import android.util.Log
 
 
 class MapsActivity : AppCompatActivity() {
@@ -43,6 +42,15 @@ class MapsActivity : AppCompatActivity() {
                 val place = PlacePicker.getPlace(this, data)
                 val toastMsg = String.format("Place: %s", place.name)
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show()
+                //MapActivityに画面遷移
+                val mapIntent = Intent(this,MoneyRegistActivity::class.java)
+                mapIntent.putExtra("latitude",place.latLng.latitude)
+                mapIntent.putExtra("longitude",place.latLng.longitude)
+                mapIntent.putExtra("name",place.name)
+                Log.d("debug","Intent 店名:${place.name}")
+                Log.d("debug","Intent 経度:${place.latLng.latitude}")
+                Log.d("debug","Intent 緯度:${place.latLng.longitude}")
+                startActivity(mapIntent)
             }
         }
     }
