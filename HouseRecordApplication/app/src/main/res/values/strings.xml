@@ -2,4 +2,8 @@
     <string name="app_name">HouseRecordApplication</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
+    <string name="shopNameLabel">店名</string>
+    <string name="boughtPriceLabel">金額</string>
+    <string name="registPriceBtn">登録</string>
+    <string name="boughtDateLabel">日付</string>
 </resources>
