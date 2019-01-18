@@ -19,8 +19,6 @@ import com.google.android.gms.location.LocationResult
 
 import kotlinx.android.synthetic.main.activity_main.*
 
-
-
 class MainActivity : AppCompatActivity() {
 
     // 位置情報を取得できるクラス
