@@ -11,8 +11,11 @@ import android.widget.AutoCompleteTextView
 import android.widget.DatePicker
 import android.widget.MultiAutoCompleteTextView
 import android.widget.TextView
+import com.google.api.services.sheets.v4.model.ValueRange
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import javax.xml.validation.Validator
+import kotlin.collections.ArrayList
 
 class MoneyRegistActivity : AppCompatActivity() {
 
@@ -32,15 +35,17 @@ class MoneyRegistActivity : AppCompatActivity() {
         val dayget = calendar.get(Calendar.DAY_OF_MONTH)
 
         val textView = findViewById<TextView>(R.id.boughtDateText)
-        val date = String.format("${yearget}年${monthget+1}月${dayget}日")
+        val date = String.format("${yearget}年${monthget + 1}月${dayget}日")
         textView.text = date
 
-        boughtDateText.setOnClickListener { view->
+        boughtDateText.setOnClickListener { view ->
             val datePicker = DatePickerDialogFragment()
             datePicker.show(supportFragmentManager, "datePicker")
 
         }
 
+        boughtRegistButton.setOnClickListener { view ->
+        }
 
     }
 }
