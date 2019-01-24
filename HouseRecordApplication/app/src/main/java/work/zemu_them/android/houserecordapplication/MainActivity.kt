@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     // 位置情報を取得できるクラス
     private lateinit var fusedLocationClient : FusedLocationProviderClient
 
+    private var locationCallback: LocationCallback? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,19 +43,13 @@ class MainActivity : AppCompatActivity() {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
-        val locationCallback = object : LocationCallback(){
-            var latidue = 0.0
-            var longitude = 0.0
+        locationCallback = object : LocationCallback(){
             override fun onLocationResult(locationResult: LocationResult?){
                 val location = locationResult?.lastLocation ?: return
                 Log.d("debug","経度:${location.latitude},経度:${location.longitude}")
                 Toast.makeText(this@MainActivity,
                     "経度:${location.latitude},経度:${location.longitude}", Toast.LENGTH_SHORT).show()
-                latidue = location.latitude
-                longitude = location.longitude
             }
-            fun lastLatitude() = latidue
-            fun lastLongitude() = longitude
         }
 
         fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper())
@@ -63,12 +59,14 @@ class MainActivity : AppCompatActivity() {
             //TODO something when floating action menu first item clicked
             //MapActivityに画面遷移
             val mapIntent = Intent(this,MapsActivity::class.java)
-            mapIntent.putExtra("latitude",locationCallback.lastLatitude())
-            mapIntent.putExtra("longitude",locationCallback.lastLongitude())
-            Log.d("debug","Intent 経度:${locationCallback.lastLatitude()}")
-            Log.d("debug","Intent 緯度:${locationCallback.lastLongitude()}")
             startActivity(mapIntent)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
