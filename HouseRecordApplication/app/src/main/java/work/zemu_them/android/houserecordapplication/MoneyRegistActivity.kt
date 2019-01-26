@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_money_regist.*
 import android.app.Dialog
+import android.content.Intent
 import android.support.v4.app.DialogFragment
 import android.text.Editable
+import android.view.KeyEvent
 import android.widget.AutoCompleteTextView
 import android.widget.DatePicker
 import android.widget.MultiAutoCompleteTextView
@@ -47,5 +49,16 @@ class MoneyRegistActivity : AppCompatActivity() {
         boughtRegistButton.setOnClickListener { view ->
         }
 
+
+
     }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            val mapIntent = Intent(this,MapsActivity::class.java)
+            startActivity(mapIntent)
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
 }
