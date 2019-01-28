@@ -34,7 +34,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_spread_sheet_add.*
 
 import java.io.IOException
 import java.util.ArrayList
@@ -45,10 +47,10 @@ import pub.devrel.easypermissions.EasyPermissions
 
 class SpreadSheetAddActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
-    internal var mCredential: GoogleAccountCredential
+    internal var mCredential: GoogleAccountCredential? = null
     private var mOutputText: TextView? = null
     private var mCallApiButton: Button? = null
-    internal var mProgress: ProgressDialog
+    internal var mProgress: ProgressBar = progressBar
 
     /**
      * Checks whether the device currently has a network connection.
@@ -112,6 +114,7 @@ class SpreadSheetAddActivity : AppCompatActivity(), EasyPermissions.PermissionCa
         mOutputText!!.text = "Click the \'$BUTTON_TEXT\' button to test the API."
         activityLayout.addView(mOutputText)
 
+        progressBar
         mProgress = ProgressDialog(this)
         mProgress.setMessage("Calling Google Sheets API ...")
 
@@ -358,11 +361,11 @@ class SpreadSheetAddActivity : AppCompatActivity(), EasyPermissions.PermissionCa
 
         override fun onPreExecute() {
             mOutputText!!.text = ""
-            mProgress.show()
+            mProgress.visibility = View.VISIBLE
         }
 
         override fun onPostExecute(output: List<String>?) {
-            mProgress.hide()
+            mProgress.visibility = View.INVISIBLE
             if (output == null || output.size == 0) {
                 mOutputText!!.text = "No results returned."
             } else {
@@ -372,7 +375,7 @@ class SpreadSheetAddActivity : AppCompatActivity(), EasyPermissions.PermissionCa
         }
 
         override fun onCancelled() {
-            mProgress.hide()
+            mProgress.visibility = View.INVISIBLE
             if (mLastError != null) {
                 if (mLastError is GooglePlayServicesAvailabilityIOException) {
                     showGooglePlayServicesAvailabilityErrorDialog(
