@@ -47,6 +47,8 @@ class MoneyRegistActivity : AppCompatActivity() {
         }
 
         boughtRegistButton.setOnClickListener { view ->
+            val spreadSheetIntent = Intent(this,SpreadSheetAddActivity::class.java)
+            startActivity(spreadSheetIntent)
         }
 
 
